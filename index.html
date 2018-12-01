@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Effective JavaScript: Frogger</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <link href='https://fonts.googleapis.com/css?family=Adamina' rel='stylesheet'>
+    <style>
+    canvas {
+        display: inline-block;
+        vertical-align: top;
+        margin:20px;
+        border-style: solid;
+        border-width: 15px;
+        border-color:white;
+        margin-right:300px;
+        /* padding:5px; */
+    }
+    </style>
+</head>
+<body onload="startGame()">
+    <div class="container">
+        <div id="Heros">
+            <img src="images/char-cat-girl.png">
+            <img src="images/char-horn-girl.png">
+            <img src="images/char-pink-girl.png">
+            <img src="images/char-princess-girl.png">
+            </div>
+    </div>
+    <!-- Background music -->
+    <div id="bgmusic">
+        <audio autoplay>
+            <source src="" type="audio/mpeg">
+        </audio>
+    </div> 
+    <!-- when player win -->
+    <div class="overlay">
+        <div class="popup">
+            <div class="content-1">
+                <h2>Congratulations! You won!</h2>
+            </div>
+            <button id="play-again" onclick="myGameArea.playAgain()">
+                Play again!😄</a>
+            </button>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
