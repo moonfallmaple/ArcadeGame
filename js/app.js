@@ -18,7 +18,6 @@ let itemImages = [
     'images/Gem-Orange.png',
     'images/Heart.png',
     'images/Key.png',
-    'images/Selector.png',
     'images/Star.png'    
 ];
 
