@@ -1,5 +1,8 @@
 # Classic Arcade Game Clone Project
 
+Project Demo: https://moonfallmaple.github.io/ArcadeGame/
+(or you can download/clone the repository and open index.html in browser)
+
 ### Basic Functionality
 
 - In this game you have a Player and Enemies (bugs). The goal of the player is to reach the water, without colliding into any one of the enemies.
