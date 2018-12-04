@@ -41,11 +41,11 @@ function shuffle(array) {
     return array;
 };
 
-let shuffledItems = shuffle(itemImages);
 
 
 
-function startGame() {   
+function startGame() { 
+    let shuffledItems = shuffle(itemImages);  
     myHero  = new Player("images/char-boy.png",70,75,200,420);
     myBackGround= new Background(rowImages,101,83);
     myGameArea.start(); 
@@ -82,6 +82,9 @@ let myGameArea = {
             });
             
     },
+    shuffleItems:function(){
+        shuffledItems = shuffle(itemImages)
+    },
     chooseHero:function (){
         let heros=document.querySelectorAll("img")
         for (let hero of heros){
@@ -110,7 +113,8 @@ let myGameArea = {
         document.getElementsByClassName("content-1")[0].innerHTML="Game Over";   
     },
     playAgain: function (){
-        document.getElementsByClassName("overlay")[0].style.visibility="hidden";  
+        document.getElementsByClassName("overlay")[0].style.visibility="hidden"; 
+        // myGameArea.shuffleItems(); 
         startGame();
     },
     soundChange: function(s){
@@ -252,12 +256,14 @@ function updateGameArea(){
     if(myHero.playerWins()){
         myGameArea.congratulations();
         myGameArea.soundChange("music/ed.mp3");
+        CollectibleItems=[];    
     }
 
     if(myHero.playerLose()){
         myGameArea.gameOver();
         myGameArea.soundChange("music/gameover.mp3");
         crashCount=0
+        CollectibleItems=[];
     }
     
     // Vehicle-player collision resets the game
