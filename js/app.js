@@ -3,10 +3,16 @@ let myHero;
 let myEnemy=[];
 let myBackGround;
 let mySound;
+
 let CollectibleItems=[];
-let CollectibleItems1
-let CollectibleItems2
-let CollectibleItems3 
+let CollectibleItems1;
+let CollectibleItems2;
+let CollectibleItems3;
+let CollectibleItems4;
+let CollectibleItems5;
+let CollectibleItems6;
+let crashCount=0;
+
 let rowImages = [
     'images/water-block.png',   // top row is water
     'images/stone-block.png',   //  3 row stone
@@ -20,7 +26,7 @@ let itemImages = [
     'images/Key.png',
     'images/Star.png'    
 ];
-
+// use to shuffle item image, so every time the game refresh, there are different items appear on the screen
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -37,18 +43,23 @@ function shuffle(array) {
 
 let shuffledItems = shuffle(itemImages);
 
+
+
 function startGame() {   
     myHero  = new Player("images/char-boy.png",70,75,200,420);
     myBackGround= new Background(rowImages,101,83);
     myGameArea.start(); 
     myGameArea.chooseHero(); 
     myGameArea.soundChange("music/op.mp3");
+    // new 6 items
     CollectibleItems1 = new items(shuffledItems[0],101,83,101,40);
-    CollectibleItems2 = new items(shuffledItems[1],101,83,202,120);
-    CollectibleItems3 = new items(shuffledItems[2],101,83,405,120);
-    CollectibleItems.push(CollectibleItems1,CollectibleItems2,CollectibleItems3)
-    
-   
+    CollectibleItems2 = new items(shuffledItems[1],101,83,101,205);
+    CollectibleItems3 = new items(shuffledItems[2],101,83,202,120);
+    CollectibleItems4 = new items(shuffledItems[3],101,83,303,205);
+    CollectibleItems5 = new items(shuffledItems[4],101,83,303,40);
+    CollectibleItems6 = new items(shuffledItems[5],101,83,405,125);
+       
+    CollectibleItems.push(CollectibleItems1,CollectibleItems2,CollectibleItems3,CollectibleItems4,CollectibleItems5,CollectibleItems6)   
 }
 
 // myGameArea object: contains methods like start(), clear(),stop(),congratulaitons(), and playAgain()
@@ -87,10 +98,18 @@ let myGameArea = {
         clearInterval(this.interval);
     },
 
-    Congratulations:function(){ //Something happens when player wins
-        document.getElementsByClassName("overlay")[0].style.visibility="visible";  
+    congratulations:function(){ //Something happens when player wins
+        document.getElementsByClassName("content-1")[0].innerHTML="Congratulations! You won!"; 
+        document.getElementsByClassName("content-1")[0].style.font=" bold 20px arial,serif"; 
+        document.getElementsByClassName("overlay")[0].style.visibility="visible"; 
+       
     },
-   playAgain: function (){
+    gameOver:function(){ //Something happens when player lose
+        document.getElementsByClassName("content-1")[0].style.font=" bold 20px arial,serif"; 
+        document.getElementsByClassName("overlay")[0].style.visibility="visible"; 
+        document.getElementsByClassName("content-1")[0].innerHTML="Game Over";   
+    },
+    playAgain: function (){
         document.getElementsByClassName("overlay")[0].style.visibility="hidden";  
         startGame();
     },
@@ -137,24 +156,23 @@ function Player(url,width,height,x,y){
     this.width=width;
     this.height=height;  
     this.speedX=0;
-    this.speedY=0; 
-
-    this.crashWith = function(otherobj){
-        let myleft = this.x;
-        let myright = this.x+ (this.width);
-        let mytop = this.y;
-        let mybottom = this.y +(this.height);
-        let otherleft = otherobj.x;
-        let otherright = otherobj.x+otherobj.width;
-        let othertop = otherobj.y;
-        let otherbottom = otherobj.y+otherobj.height;
-        let crash=true;
-        if((mytop>otherbottom)|| (myleft>otherright)||(mybottom<othertop)||(myright<otherleft)){
-            crash=false;
-        }
-        return crash;
-    }   
+    this.speedY=0;   
 }
+Player.prototype.crashWith= function(otherobj){
+    let myleft = this.x;
+    let myright = this.x+ (this.width);
+    let mytop = this.y;
+    let mybottom = this.y +(this.height);
+    let otherleft = otherobj.x;
+    let otherright = otherobj.x+otherobj.width;
+    let othertop = otherobj.y;
+    let otherbottom = otherobj.y+otherobj.height;
+    let crash=true;
+    if((mytop>otherbottom)|| (myleft>otherright)||(mybottom<othertop)||(myright<otherleft)){
+        crash=false;
+    }
+    return crash;
+}   
 
 Player.prototype.update=function(){
     if(this.x<-15){ //make the player cannot move off screen
@@ -183,6 +201,14 @@ Player.prototype.playerWins = function(){
     }
     return win;
 }
+Player.prototype.playerLose = function(){
+    let lose =false;
+    if (crashCount==3){
+        lose = true;
+        myGameArea.stop();
+    }
+    return lose;
+}
 
 
 function Enemies(url,width,height,x,y){
@@ -204,6 +230,7 @@ Enemies.prototype.newPos = function(){
     this.y+=this.speedY;
 } 
 
+// items' constructor function
 function items(img,width,height,x,y){
     this.x=x;
     this.y=y;
@@ -217,14 +244,22 @@ items.prototype.update= function (){
 }
 
 
+
+
 function updateGameArea(){
     let x,y;
-    let restItems=[];
     //when Player win, the game will stop and the hidden layer about congratulation will show up 
     if(myHero.playerWins()){
-        myGameArea.Congratulations();
+        myGameArea.congratulations();
         myGameArea.soundChange("music/ed.mp3");
     }
+
+    if(myHero.playerLose()){
+        myGameArea.gameOver();
+        myGameArea.soundChange("music/gameover.mp3");
+        crashCount=0
+    }
+    
     // Vehicle-player collision resets the game
     // if crash with enemy, my hero will turn back to original place. My enemy will still pass the game area.
     for(let i=0; i<myEnemy.length; i++){
@@ -236,11 +271,13 @@ function updateGameArea(){
             myEnemy[i].update();
             myHero.x=200;
             myHero.y=420;
+            crashCount++
         }
         
     }
+   
 
-  
+  //play can collect different items
     for (let each of CollectibleItems){
         if (myHero.crashWith(each)){
             let indexOfCrash=CollectibleItems.indexOf(each)
@@ -254,15 +291,11 @@ function updateGameArea(){
 
     
    // refresh myGameArea
-    myGameArea.clear();
     myBackGround.update();
-
     for (let each of CollectibleItems){
         each.update()
     }
-  
     myGameArea.frameNo+=1;
-    // myBackGround.update();
    // control my hero to left/up/right/down
     myHero.speedX=0;
     myHero.speedY=0;
