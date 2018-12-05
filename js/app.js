@@ -124,7 +124,7 @@ let myGameArea = {
     addSoundsForItem: function(h){
         document.getElementById("getItems").childNodes[1].src=h;
     },
-    addSoundsFoCrash:function(h){
+    addSoundsForCrash:function(h){
         document.getElementById("crash").childNodes[1].src=h;
     }
   
@@ -277,7 +277,7 @@ function updateGameArea(){
     // if crash with enemy, my hero will turn back to original place. My enemy will still pass the game area.
     for(let i=0; i<myEnemy.length; i++){
         if (myHero.crashWith(myEnemy[i])){
-            myGameArea.addSoundsFoCrash("music/crash.mp3")
+            myGameArea.addSoundsForCrash("music/crash.mp3")
             myGameArea.clear();
             myBackGround.update();
             myEnemy[i].x+=3;
