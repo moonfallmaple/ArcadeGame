@@ -1,6 +1,7 @@
 body {
     text-align: center;
-    background-color:black;
+    /* background-color:black; */
+    background-image: url("../images/bg3.JPG");
     overflow: hidden;
 }
 h2 {
