@@ -50,7 +50,7 @@ function startGame() {
     myBackGround= new Background(rowImages,101,83);
     myGameArea.start(); 
     myGameArea.chooseHero(); 
-    myGameArea.soundChange("music/op.mp3");
+    myGameArea.bgSoundChange("music/op.mp3");
     // new 6 items
     CollectibleItems1 = new items(shuffledItems[0],101,83,101,40);
     CollectibleItems2 = new items(shuffledItems[1],101,83,101,205);
@@ -117,9 +117,15 @@ let myGameArea = {
         // myGameArea.shuffleItems(); 
         startGame();
     },
-    soundChange: function(s){
-        document.getElementsByTagName("audio")[0].src=s;
+    bgSoundChange: function(s){
+        document.getElementById("bgmusic").childNodes[1].src=s;
     
+    },
+    addSoundsForItem: function(h){
+        document.getElementById("getItems").childNodes[1].src=h;
+    },
+    addSoundsFoCrash:function(h){
+        document.getElementById("crash").childNodes[1].src=h;
     }
   
 }    
@@ -251,17 +257,18 @@ items.prototype.update= function (){
 
 
 function updateGameArea(){
-    let x,y;
+    let x;
+    let y;
     //when Player win, the game will stop and the hidden layer about congratulation will show up 
     if(myHero.playerWins()){
         myGameArea.congratulations();
-        myGameArea.soundChange("music/ed.mp3");
+        myGameArea.bgSoundChange("music/ed.mp3");
         CollectibleItems=[];    
     }
 
     if(myHero.playerLose()){
         myGameArea.gameOver();
-        myGameArea.soundChange("music/gameover.mp3");
+        myGameArea.bgSoundChange("music/gameover.mp3");
         crashCount=0
         CollectibleItems=[];
     }
@@ -270,6 +277,7 @@ function updateGameArea(){
     // if crash with enemy, my hero will turn back to original place. My enemy will still pass the game area.
     for(let i=0; i<myEnemy.length; i++){
         if (myHero.crashWith(myEnemy[i])){
+            myGameArea.addSoundsFoCrash("music/crash.mp3")
             myGameArea.clear();
             myBackGround.update();
             myEnemy[i].x+=3;
@@ -278,6 +286,7 @@ function updateGameArea(){
             myHero.x=200;
             myHero.y=420;
             crashCount++
+            
         }
         
     }
@@ -286,6 +295,7 @@ function updateGameArea(){
   //play can collect different items
     for (let each of CollectibleItems){
         if (myHero.crashWith(each)){
+            myGameArea.addSoundsForItem("music/getitems.mp3")
             let indexOfCrash=CollectibleItems.indexOf(each)
             CollectibleItems.splice(indexOfCrash,1) 
             for (let each of CollectibleItems){
