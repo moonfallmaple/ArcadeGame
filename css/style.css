@@ -2,6 +2,7 @@ body {
     text-align: center;
     background-image: url("../images/bg3.jpg");
     overflow: hidden;
+    background-repeat: no-repeat;
 }
 h2 {
     color:black;
@@ -15,14 +16,14 @@ h2 {
    display: inline-block;
    vertical-align: top;
    width: 150px;
-   margin-left:150px;
+   margin-left:130px;
 }
 #Heros img {
     display: block;
     text-decoration: none;
 }
 #Heros img:hover{
-    background-color: #ccc;
+    background-color: rgba(252, 247, 247, 0.212);
 }
 .overlay{
 
