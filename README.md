@@ -34,6 +34,6 @@ In order to run and play the game you can:
 - Once the player reaches the water (i.e., the top of the game board), the game is won
 
 <div  align="center">
-<img src="./demo.jpg" width = "1000" height = "600" alt="图片名称" align=center />
+<img src="./demo.jpg" width = "800" height = "600" alt="图片名称" align=center />
 </div>
 
