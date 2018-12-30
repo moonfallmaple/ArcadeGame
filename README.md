@@ -1,10 +1,10 @@
 Arcade Game
 ===============================
+<div  align="left">
+<img src="./demo.jpg" width = "700" height = "500" alt="图片名称" align=center />
+</div>
 
 # Table of Contents
-<div  align="left">
-<img src="./demo.jpg" width = "900" height = "500" alt="图片名称" align=center />
-</div>
 
 * [Description](#description)
 * [Run the Game](#run-the-game)
